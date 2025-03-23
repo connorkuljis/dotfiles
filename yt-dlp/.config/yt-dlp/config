@@ -1,0 +1,15 @@
+--verbose
+--restrict-filenames
+--embed-metadata
+--embed-thumbnail
+--embed-chapters
+
+--paths						~/Downloads/
+--output					%(uploader)s/%(upload_date>%Y%m%d)s-%(title)s-[%(id)s].%(ext)s
+--output-na-placeholder		unknown
+--format					bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best
+--format-sort				res,ext:mp4:m4a --recode mp4
+
+--embed-subs
+--sub-format				srt
+ 
