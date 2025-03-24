@@ -1,3 +1,3 @@
-# Dotfiles
+# dotfiles
 
-These are my dotfile managed by gnu stow.
+Connor Kuljis' dotfiles managed by [GNU Stow](https://www.gnu.org/software/stow/).
