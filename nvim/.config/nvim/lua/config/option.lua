@@ -13,5 +13,8 @@ vim.opt.softtabstop = 4
 -- Enable relative line numbers
 vim.opt.relativenumber = true
 
--- Increases line number margin width
--- vim.opt.numberwidth = 6
+-- Enable wildmenu
+vim.o.wildmenu = true
+vim.o.wildmode = "longest:list,full"
+
+vim.o.background = "dark"
