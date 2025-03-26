@@ -1,6 +1,4 @@
 -- init.lua
--- This file is the main configuration file for Neovim written in Lua.
--- It sets up keymaps, plugins, options, and appearance settings.
 
 -- Load keymap configurations before loading plugins from lazy.
 require("config.keymap")
