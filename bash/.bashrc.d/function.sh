@@ -24,23 +24,20 @@ function ss() {
 }
 
 function dl_audio() {
-    # Check if exactly 2 arguments are provided
-    if [ "$#" -ne 2 ]; then
-        echo "Usage: dl_audio <audio_format> <url>"
-        return 1
-    fi
-
     # Assign arguments to variables for clarity
-    local audio_format="$1"
-    local url="$2"
+    local audio_format="mp3"
+    local url="$1"
 
     # Download audio using yt-dlp
     yt-dlp -P ~/Music/ \
         -x \
+		--ignore-config \
         --audio-format "$audio_format" \
 		--no-playlist \
         --embed-thumbnail \
         --embed-chapters \
+        --embed-metadata \
+		--restrict-filenames \
         "$url"
 }
 
