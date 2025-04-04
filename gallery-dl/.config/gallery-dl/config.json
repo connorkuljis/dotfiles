@@ -1,0 +1,17 @@
+{
+	"extractor": {
+		"base-directory": "$HOME/Pictures/gallery-dl",
+		"archive": "$HOME/Pictures/gallery-dl/archive.sqlite3",
+        "archive-pragma": ["journal_mode=WAL", "synchronous=NORMAL"],
+		"pinterest": {
+			"cookies": ["firefox"]
+		}
+	},
+	"downloader": {
+		"rate": "1M",
+		"sleep": 0.5,
+		"sleep-429": [5.0, 15.0],
+		"timeout": 15.0,
+		"retries": 3
+	}
+}
