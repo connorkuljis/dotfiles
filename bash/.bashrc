@@ -20,5 +20,3 @@ if [ -d ~/.bashrc.d ]; then
     done
 fi
 unset rc
-
-export DOIT_SQLITE_PATH="/home/connor/Documents/go/doit/db.db"
