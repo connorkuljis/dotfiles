@@ -3,7 +3,10 @@
 local cmp = {
 	{
 		"saghen/blink.cmp",
-		dependencies = { "rafamadriz/friendly-snippets" },
+		dependencies = {
+			"rafamadriz/friendly-snippets",
+			-- "nvim-tree/nvim-web-devicons",
+		},
 
 		-- Use a release tag to download pre-built binaries
 		version = "*",

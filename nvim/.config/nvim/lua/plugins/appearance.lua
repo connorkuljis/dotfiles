@@ -7,10 +7,6 @@ local appearance = {
 		priority = 1000,
 	},
 	{
-		"nvim-tree/nvim-web-devicons",
-		enabled = true,
-	},
-	{
 		"maxmx03/solarized.nvim",
 		enabled = true,
 	},

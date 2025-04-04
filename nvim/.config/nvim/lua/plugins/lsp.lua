@@ -12,13 +12,13 @@ local lsp = {
 
 			-- List of language servers to configure
 			local servers = {
-				"lua_ls",
-				"gopls",
-				"zls",
-				"pyright",
-				"html",
+				"clangd",
 				"cssls",
-				"clangd"
+				"gopls",
+				"html",
+				"lua_ls",
+				"pyright",
+				"zls",
 			}
 
 			-- Configure each language server with the same capabilities
@@ -29,7 +29,9 @@ local lsp = {
 			end
 
 			-- LSP Keybinds
-			vim.keymap.set('n', 'gD',
+			-- TODO: fix collision with go to local declaration (vim standard)
+			-- https://vim.fandom.com/wiki/Go_to_definition_using_g
+			vim.keymap.set('n', 'gd',
 				vim.lsp.buf.definition, { desc = "Go to definition" }
 			)
 			vim.keymap.set('n', 'gi',
@@ -44,7 +46,7 @@ local lsp = {
 			vim.keymap.set('n', '<leader>ca',
 				vim.lsp.buf.code_action, { desc = "Code action" }
 			)
-			vim.keymap.set('n', '<leader>rn',
+			vim.keymap.set('n', '<leader>r',
 				vim.lsp.buf.rename, { desc = "Rename symbol" }
 			)
 			vim.keymap.set('n', 'gk',
@@ -85,26 +87,19 @@ local lsp = {
 			)
 
 			-- Symbols
-			vim.keymap.set('n', '<leader>ws',
-				require('telescope.builtin').lsp_workspace_symbols,
-				{ desc = "Workspace symbols" }
-			)
-			vim.keymap.set('n', '<leader>ds',
-				require('telescope.builtin').lsp_document_symbols,
-				{ desc = "Document symbols" }
-			)
+			-- TODO: workspace symbols
+			-- TODO: document symbols
 
 			-- LSP auto-formatting on save
 			vim.api.nvim_create_autocmd("LspAttach", {
-				group = vim.api.nvim_create_augroup(
-					"lsp", { clear = true }
-				),
+				group = vim.api.nvim_create_augroup("lsp", { clear = true }),
 				callback = function(args)
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = args.buf,
 						callback = function()
 							vim.lsp.buf.format {
-								async = false, id = args.data.client_id
+								async = false,
+								id = args.data.client_id,
 							}
 						end,
 					})
