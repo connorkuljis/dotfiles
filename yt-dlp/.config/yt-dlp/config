@@ -1,15 +1,17 @@
---verbose
---restrict-filenames
 --embed-metadata
 --embed-thumbnail
 --embed-chapters
 --embed-subs
+--no-playlist
 
---paths	"~/Videos/"
---output "%(uploader)s/%(upload_date>%Y%m%d)s-%(title)s-[%(id)s].%(ext)s"
---output-na-placeholder	"unknown"
---format "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"
---format-sort "res,ext:mp4:m4a"
---recode "mp4"
 --sub-format "srt"
+--sub-langs "en"
+--output-na-placeholder	"unknown"
+
+--paths	"$HOME/Videos/yt-dlp"
+--download-archive "$HOME/Videos/yt-dlp/archive.txt"
+
+--output "%(uploader_id)s/%(uploader)s - %(upload_date)s - %(title)s - [%(id)s].%(ext)s"
+--format "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
+
  
