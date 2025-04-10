@@ -13,4 +13,4 @@ require("config.option")
 require("config.autocommand")
 
 -- Set the colorscheme
-vim.cmd([[colorscheme onedark ]])
+vim.cmd([[colorscheme onedark]])
