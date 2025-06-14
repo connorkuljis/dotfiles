@@ -3,11 +3,17 @@
 local appearance = {
 	{
 		"navarasu/onedark.nvim",
-		enabled = true,
 		priority = 1000,
+		enabled = true,
 	},
 	{
 		"maxmx03/solarized.nvim",
+		priority = 1000,
+		enabled = true,
+	},
+	{
+		"ellisonleao/gruvbox.nvim",
+		priority = 1000,
 		enabled = true,
 	},
 }
