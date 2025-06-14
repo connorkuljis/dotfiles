@@ -5,6 +5,9 @@
         "archive-pragma": ["journal_mode=WAL", "synchronous=NORMAL"],
 		"pinterest": {
 			"cookies": ["firefox"]
+		},
+		"instagram": {
+			"cookies": ["firefox"]
 		}
 	},
 	"downloader": {
