@@ -1,4 +1,4 @@
--- plugins/completion.lua
+-- plugins/completions.lua
 
 local cmp = {
 	{
