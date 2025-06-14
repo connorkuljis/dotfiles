@@ -1,5 +1,8 @@
 # .bashrc
 
+# Enable vi mode
+set -o vi
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
@@ -20,3 +23,4 @@ if [ -d ~/.bashrc.d ]; then
     done
 fi
 unset rc
+
