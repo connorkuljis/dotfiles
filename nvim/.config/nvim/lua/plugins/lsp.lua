@@ -85,10 +85,18 @@ local lsp = {
 				end,
 				{ desc = "List workspace folders" }
 			)
-
-			-- Symbols
-			-- TODO: workspace symbols
-			-- TODO: document symbols
+			vim.keymap.set('n', '<leader>ws',
+				function()
+					vim.lsp.buf.workspace_symbol()
+				end,
+				{ desc = "Workspace symbols" }
+			)
+			vim.keymap.set('n', '<leader>ds',
+				function()
+					vim.lsp.buf.document_symbol()
+				end,
+				{ desc = "Document symbols" }
+			)
 
 			-- LSP auto-formatting on save
 			vim.api.nvim_create_autocmd("LspAttach", {
