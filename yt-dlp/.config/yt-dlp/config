@@ -11,7 +11,7 @@
 --paths	"$HOME/Videos/yt-dlp"
 --download-archive "$HOME/Videos/yt-dlp/archive.txt"
 
---output "%(uploader_id)s/%(uploader)s - %(upload_date)s - %(title)s - [%(id)s].%(ext)s"
+--output "%(extractor)s/%(uploader_id)s/%(uploader)s - %(upload_date)s - %(title)s - [%(id)s].%(ext)s"
 --format "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
 
  
