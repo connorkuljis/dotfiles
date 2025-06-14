@@ -17,4 +17,3 @@ vim.opt.relativenumber = true
 vim.o.wildmenu = true
 vim.o.wildmode = "longest:list,full"
 
-vim.o.background = "dark"
