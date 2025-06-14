@@ -1,9 +1,11 @@
 {
+  "base16-nvim": { "branch": "master", "commit": "f9ce7474c54803cb0fa308b0b91549d394a07940" },
   "blink.cmp": { "branch": "main", "commit": "49f211fe5d729df53df4c042d7c3464cf47d199e" },
   "copilot.vim": { "branch": "release", "commit": "a9228e015528c9307890c48083c925eb98a64a79" },
   "friendly-snippets": { "branch": "main", "commit": "efff286dd74c22f731cdec26a70b46e5b203c619" },
   "fzf": { "branch": "master", "commit": "e15cba0c8c7c9dd3388d260cf5b5de7fc044dfbc" },
   "fzf.vim": { "branch": "master", "commit": "1fff637559f29d5edbdb05e03327954a8cd9e406" },
+  "gruvbox.nvim": { "branch": "main", "commit": "dfc89cf5ce9a5ac149dd5d4b347fc1db3c1b2fa4" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
   "mini.nvim": { "branch": "main", "commit": "687fa868d869078194c02065628712982d971fd6" },
   "nvim-lspconfig": { "branch": "master", "commit": "40f120c10ea4b87311175539a183c3b75eab95a3" },
