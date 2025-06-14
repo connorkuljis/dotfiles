@@ -9,7 +9,7 @@ vim.keymap.set("n", "<leader><leader>x", "<cmd>source %<CR> <cmd>echo 'reloaded 
 vim.keymap.set("n", "<leader>e", "<cmd>Explore <CR>")
 
 -- Define a custom command to open ~/.config/nvim
-vim.api.nvim_create_user_command('EditConfig', function()
+vim.api.nvim_create_user_command('ConfigOpen', function()
 	vim.cmd('edit ~/.config/nvim')
 end, {})
 
