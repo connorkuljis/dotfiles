@@ -3,6 +3,10 @@
 # Enable vi mode
 set -o vi
 
+# Enables C-l to clear screen
+bind -m vi-command 'Control-l: clear-screen'
+bind -m vi-insert 'Control-l: clear-screen'
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
