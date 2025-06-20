@@ -18,6 +18,7 @@ local lsp = {
 				"html",
 				"lua_ls",
 				"pyright",
+				"ts_ls",
 				"zls",
 			}
 
