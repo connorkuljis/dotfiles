@@ -5,7 +5,6 @@ vim.keymap.set("n", "<space>", "<nop>")
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
-vim.keymap.set("n", "<leader><leader>x", "<cmd>source %<CR> <cmd>echo 'reloaded config!'<CR>")
 vim.keymap.set("n", "<leader>e", "<cmd>Explore <CR>")
 
 -- Define a custom command to open ~/.config/nvim
