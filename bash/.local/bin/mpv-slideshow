@@ -1,0 +1,8 @@
+#!/bin/bash
+
+find \
+	. \
+	-type f \
+	\( -name "*.jpg" -o -name "*.png" -o -name "*.gif" -o -name "*.webp"  \) \
+	| shuf \
+	| mpv --playlist=-
