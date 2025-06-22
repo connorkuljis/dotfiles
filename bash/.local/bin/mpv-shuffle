@@ -1,0 +1,8 @@
+#!/bin/bash
+
+find \
+	. \
+	-type f \
+	\( -name "*.mp4" -o -name "*.m4v" -o -name "*.webm"  \) \
+	| shuf \
+	| mpv --playlist=-
