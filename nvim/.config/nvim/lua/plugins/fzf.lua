@@ -8,9 +8,13 @@ return {
 		keys = {
 			{
 				"<leader>f",
-				-- conver to lua
 				":Files <CR>",
 				desc = "Open file picker"
+			},
+			{
+				"<leader>F",
+				":GitFiles <CR>",
+				desc = "Open git files in file picker"
 			},
 			{
 				"<leader>b",
