@@ -8,13 +8,16 @@ local lsp = {
 		config = function()
 			-- List of language servers to configure
 			local servers = {
+				"bashls",
 				"clangd",
 				"cssls",
 				"gopls",
 				"html",
+				"jsonls",
 				"lua_ls",
 				"pyright",
 				"ts_ls",
+				"yamlls",
 				"zls",
 			}
 
