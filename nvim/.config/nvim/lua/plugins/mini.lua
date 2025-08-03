@@ -7,6 +7,7 @@ local mini = {
 		config = function()
 			require("mini.statusline").setup()
 			require("mini.comment").setup()
+			require("mini.git").setup()
 		end
 	},
 }
