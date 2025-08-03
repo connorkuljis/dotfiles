@@ -1,8 +1,13 @@
 #!/bin/bash
 
+dir="$1"
+shift
+opts="$@"
+
 find \
-	. \
+	"$dir" \
+	"$opts" \
 	-type f \
-	\( -name "*.mp4" -o -name "*.m4v" -o -name "*.webm"  \) \
+	\( -name '*.mp4' -o -name '*.m4v' -o -name '*.gif' -o -name '*.webm'  \) \
 	| shuf \
 	| mpv --playlist=-
