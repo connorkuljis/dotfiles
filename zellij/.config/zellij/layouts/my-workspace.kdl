@@ -5,7 +5,27 @@ layout {
         }
         children
     }
-	tab name="home" {
+	tab name="🎩 btop" {
+		pane command="btop"
+	}
+	tab name="🌏 home" {
+		pane
+	}
+	tab name="✒️ blog" cwd="~/Documents/programming/blog/" split_direction="vertical" {
+		pane
+		pane 
+		floating_panes {
+			pane
+			pane
+		}
+	}
+	tab name="▶️ media" {
+		pane
+		pane
+	}
+	tab name="🌐 downloader"{
+		pane 
+		pane
 		pane
 	}
 }
