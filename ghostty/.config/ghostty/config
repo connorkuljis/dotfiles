@@ -11,7 +11,11 @@
 # Additionally, each config option is also explained in detail
 # on Ghostty's website, at https://ghostty.org/docs/config.
 
-font-family = Opus One
-theme = OneHalfDark
-window-padding-x = 2
+font-family = Hasklig
+font-size = 16
 
+theme = iTerm2 Default
+
+window-padding-balance = true
+
+copy-on-select = clipboard
