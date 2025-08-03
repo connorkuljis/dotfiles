@@ -1,0 +1,4 @@
+#!/bin/bash
+
+go mod edit -go="$(go env GOVERSION | sed 's/^go//')"
+
