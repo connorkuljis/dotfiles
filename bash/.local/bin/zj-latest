@@ -1,0 +1,3 @@
+#!/bin/bash
+
+zellij attach $(zellij ls --short --reverse | head -n 1)
