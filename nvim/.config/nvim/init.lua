@@ -15,33 +15,13 @@ require("config.autocommand")
 -- Set the colorscheme
 vim.cmd([[colorscheme onedark]])
 
--- Automatic light/dark mode.
+-- Automatic light/dark mode moved to lua/config/theme.lua
 local enableAutoLightDarkMode = true
 local bg = "dark"
 
 if enableAutoLightDarkMode then
-	local handle = io.popen("gsettings get org.gnome.desktop.interface color-scheme")
-	if not handle then
-		error("cannot get gnome interface color theme")
-		return
-	end
-
-	local result = handle:read("*a")
-	handle:close()
-
-	-- trim whitespace/newlines
-	result = result:gsub("%s+", "")
-
-	-- trim single quotes
-	result = result:gsub("'", "")
-
-	local themes = {
-		["prefer-dark"] = "dark",
-		["default"]     = "light",
-		["auto"]        = "light", -- some GNOME versions
-	}
-
-	bg = themes[result]
+	local theme = require("config.theme")
+	bg = theme.get_system_theme() or "dark"
 end
 
 vim.cmd("set background=" .. bg)

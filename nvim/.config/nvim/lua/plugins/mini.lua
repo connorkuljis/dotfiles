@@ -8,7 +8,7 @@ local mini = {
 			require("mini.statusline").setup()
 			require("mini.comment").setup()
 			require("mini.git").setup()
-		end
+		end,
 	},
 }
 

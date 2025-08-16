@@ -17,4 +17,3 @@ local treesitter = {
 }
 
 return treesitter
-

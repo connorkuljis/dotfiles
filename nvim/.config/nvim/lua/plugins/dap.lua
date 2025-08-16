@@ -4,35 +4,45 @@ local dap = {
 		dependencies = {
 			"leoluz/nvim-dap-go",
 			"rcarriga/nvim-dap-ui",
-			"nvim-neotest/nvim-nio"
+			"nvim-neotest/nvim-nio",
 		},
 		lazy = true,
 		enabled = true,
 		keys = {
 			{
 				"<leader>db",
-				function() require("dap").toggle_breakpoint() end,
-				desc = "Toggle Breakpoint"
+				function()
+					require("dap").toggle_breakpoint()
+				end,
+				desc = "Toggle Breakpoint",
 			},
 			{
 				"<leader>dl",
-				function() require("dap").run_to_cursor() end,
-				desc = "Run to Cursor"
+				function()
+					require("dap").run_to_cursor()
+				end,
+				desc = "Run to Cursor",
 			},
 			{
 				"<leader>dd",
-				function() require("dap").continue() end,
-				desc = "Continue"
+				function()
+					require("dap").continue()
+				end,
+				desc = "Continue",
 			},
 			{
 				"<leader>dn",
-				function() require("dap").step_over() end,
-				desc = "Next Step"
+				function()
+					require("dap").step_over()
+				end,
+				desc = "Next Step",
 			},
 			{
 				"<leader>dN",
-				function() require("dap").step_into() end,
-				desc = "Next Step"
+				function()
+					require("dap").step_into()
+				end,
+				desc = "Next Step",
 			},
 		},
 		config = function()
@@ -60,13 +70,17 @@ local dap = {
 		keys = {
 			{
 				"<leader>dt",
-				function() require("dap-go").debug_test() end,
-				desc = "Debug Test"
+				function()
+					require("dap-go").debug_test()
+				end,
+				desc = "Debug Test",
 			},
 			{
 				"<leader>dT",
-				function() require("dap-go").debug_last_test() end,
-				desc = "Debug Last Test"
+				function()
+					require("dap-go").debug_last_test()
+				end,
+				desc = "Debug Last Test",
 			},
 		},
 	},
