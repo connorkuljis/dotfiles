@@ -20,8 +20,12 @@ local enableAutoLightDarkMode = true
 local bg = "dark"
 
 if enableAutoLightDarkMode then
-	local theme = require("config.theme")
+	local theme = require("plugins-custom.autocolorscheme")
 	bg = theme.get_system_theme() or "dark"
 end
 
 vim.cmd("set background=" .. bg)
+
+require('plugins-custom.radio-chatter').setup({
+	backend = "auto",
+})
