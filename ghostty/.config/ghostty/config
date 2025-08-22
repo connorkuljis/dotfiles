@@ -14,7 +14,10 @@
 font-family = Hasklig
 font-size = 16
 
-theme = iTerm2 Default
+# theme = iTerm2 Default
+# theme = Builtin Solarized Dark
+#
+theme = dark:OneHalfDark,light:OneHalfLight
 
 window-padding-balance = true
 
