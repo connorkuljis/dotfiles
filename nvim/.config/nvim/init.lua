@@ -15,17 +15,14 @@ require("config.autocommand")
 -- Set the colorscheme
 vim.cmd([[colorscheme onedark]])
 
--- Automatic light/dark mode moved to lua/config/theme.lua
-local enableAutoLightDarkMode = true
-local bg = "dark"
+-- Setup auto color scheme with default options
+require("custom.auto_color_scheme").setup({
+	enabled = true,
+	auto_set_background = true,
+	fallback_theme = "dark",
+})
 
-if enableAutoLightDarkMode then
-	local theme = require("plugins-custom.autocolorscheme")
-	bg = theme.get_system_theme() or "dark"
-end
-
-vim.cmd("set background=" .. bg)
-
-require('plugins-custom.radio-chatter').setup({
+require("custom.radio_chatter").setup({
+	enabled = true,
 	backend = "auto",
 })
