@@ -20,3 +20,6 @@ vim.o.wildmode = "longest:list,full"
 -- Enable persistent undo
 vim.o.undofile = true
 vim.o.undodir = os.getenv("HOME") .. "/.local/share/nvim/undo"
+
+-- Show indent markers
+vim.o.list = true;
