@@ -23,6 +23,6 @@ require("custom.auto_color_scheme").setup({
 })
 
 require("custom.radio_chatter").setup({
-	enabled = true,
+	enabled = not true,
 	backend = "auto",
 })

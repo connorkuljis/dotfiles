@@ -12,12 +12,14 @@
 # on Ghostty's website, at https://ghostty.org/docs/config.
 
 font-family = Hasklig
-font-size = 16
+# font-family = B162Liga Nerd Font
+font-size = 14
 
 # theme = iTerm2 Default
 # theme = Builtin Solarized Dark
-#
-theme = dark:OneHalfDark,light:OneHalfLight
+theme = light:OneHalfLight,dark:OneHalfDark
+# theme = light:Material,dark:MaterialDarker
+
 
 window-padding-balance = true
 

@@ -63,7 +63,8 @@ function move_screenshots() {
 	find $HOME/Downloads/ -name "*Screenshot*" -exec mv {} $HOME/Pictures/Screenshots/ \;
 }
 
-function fix_plasmashell()
-{
+function fix_plasmashell() {
 	plasmashell --replace
 }
+
+

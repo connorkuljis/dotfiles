@@ -1,19 +1,34 @@
 {
 	"extractor": {
-		"base-directory": "$HOME/gallery-dl",
-		"archive": "$HOME/gallery-dl/archive.sqlite3",
-        "archive-pragma": ["journal_mode=WAL", "synchronous=NORMAL"],
+		"base-directory": "/mnt/crypt/gallery-dl/",
+		"archive": "$HOME/.local/share/gallery-dl/archive.sqlite3",
+		"archive-pragma": [
+			"journal_mode=WAL",
+			"synchronous=NORMAL"
+		],
 		"pinterest": {
-			"cookies": ["firefox"]
+			"cookies": [
+				"firefox"
+			]
 		},
 		"instagram": {
-			"cookies": ["firefox"]
+			"cookies": [
+				"firefox"
+			]
+		},
+		"reddit": {
+			"cookies": [
+				"firefox"
+			]
 		}
 	},
 	"downloader": {
 		"rate": "1.5M",
 		"sleep": 0.5,
-		"sleep-429": [5.0, 15.0],
+		"sleep-429": [
+			5.0,
+			15.0
+		],
 		"timeout": 90.0,
 		"retries": 3
 	}

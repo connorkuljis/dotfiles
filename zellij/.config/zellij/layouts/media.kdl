@@ -1,0 +1,17 @@
+layout {
+	default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="compact-bar"
+        }
+        children
+    }
+	tab name="media" {
+		pane
+		pane
+	}
+	tab name="downloader"{
+		pane
+		pane
+	}
+}
+

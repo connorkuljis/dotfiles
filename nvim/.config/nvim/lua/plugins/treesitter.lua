@@ -6,9 +6,10 @@ local treesitter = {
 		enabled = true,
 		build = ":TSUpdate",
 		opts = {
-			highlight = { enable = true },
-			ensure_installed = { "lua", "go", "html", "rust", "css" },
 			auto_install = true,
+			ensure_installed = { "lua", "go", "html", "rust", "css", "python" },
+			highlight = { enable = true },
+			indent = { enable = true },
 		},
 		config = function(_, opts)
 			require("nvim-treesitter.configs").setup(opts)

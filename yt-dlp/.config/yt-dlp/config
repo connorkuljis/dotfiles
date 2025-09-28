@@ -8,8 +8,8 @@
 --sub-langs "en"
 --output-na-placeholder	"unknown"
 
---paths	"$HOME/yt-dlp"
---download-archive "$HOME/yt-dlp/archive.txt"
+--paths "/mnt/crypt/yt-dlp"
+--download-archive "/mnt/crypt/yt-dlp/archive.txt"
 
 --output "%(extractor)s/%(uploader_id)s/%(uploader)s - %(upload_date)s - %(title)s - [%(id)s].%(ext)s"
 --format "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"

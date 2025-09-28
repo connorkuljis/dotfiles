@@ -1,6 +1,9 @@
 -- Use tabs instead of spaces
 vim.opt.expandtab = false
 
+-- Disable smart indent (use treesitter indent)
+vim.opt.smartindent = false
+
 -- Set tab width to 4 spaces
 vim.opt.tabstop = 4
 

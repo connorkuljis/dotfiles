@@ -21,6 +21,11 @@ local appearance = {
 		priority = 1000,
 		enabled = true,
 	},
+	{
+		"marko-cerovac/material.nvim",
+		priority = 1000,
+		enabled = true,
+	},
 }
 
 return appearance
