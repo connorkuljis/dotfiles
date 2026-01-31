@@ -1,5 +1,8 @@
 -- init.lua
 
+-- Source .vimrc for shared Vimscript configuration
+vim.cmd("source ~/.vimrc")
+
 -- Load keymap configurations before loading plugins from lazy.
 require("config.keymap")
 
@@ -17,12 +20,12 @@ vim.cmd([[colorscheme onedark]])
 
 -- Setup auto color scheme with default options
 require("custom.auto_color_scheme").setup({
-	enabled = true,
+	enabled = false,
 	auto_set_background = true,
 	fallback_theme = "dark",
 })
 
 require("custom.radio_chatter").setup({
-	enabled = not true,
+	enabled = false,
 	backend = "auto",
 })

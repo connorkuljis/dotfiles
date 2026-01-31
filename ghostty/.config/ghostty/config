@@ -17,9 +17,9 @@ font-size = 14
 
 # theme = iTerm2 Default
 # theme = Builtin Solarized Dark
-theme = light:OneHalfLight,dark:OneHalfDark
+theme = OneHalfDark
+# theme = light:OneHalfLight,dark:OneHalfDark
 # theme = light:Material,dark:MaterialDarker
-
 
 window-padding-balance = true
 

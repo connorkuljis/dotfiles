@@ -13,6 +13,7 @@ local lsp = {
 				"cssls",
 				"gopls",
 				"html",
+				"jdtls",
 				"jsonls",
 				"lua_ls",
 				"basedpyright",
