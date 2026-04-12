@@ -1,7 +1,9 @@
 {
 	"extractor": {
-		"base-directory": "/mnt/crypt/gallery-dl/",
+		"base-directory": "/mnt/ultrastar/crypt/gallery-dl/",
 		"archive": "$HOME/.local/share/gallery-dl/archive.sqlite3",
+		"path-restrict": "windows",
+		"path-replace": "_",
 		"archive-pragma": [
 			"journal_mode=WAL",
 			"synchronous=NORMAL"
