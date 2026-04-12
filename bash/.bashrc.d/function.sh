@@ -67,4 +67,8 @@ function fix_plasmashell() {
 	plasmashell --replace
 }
 
+function f() {
+	$EDITOR "$(fzf)"
+}
+
 
