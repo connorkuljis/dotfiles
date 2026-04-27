@@ -1,3 +1,112 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
-sudo /etc/init.d/networking restart
+set -euo pipefail
+
+try_run() {
+  attempted=1
+
+  printf 'Running: %s\n' "$*"
+  if "$@"; then
+    return 0
+  fi
+
+  printf 'dns-flush: command failed: %s\n' "$*" >&2
+  return 1
+}
+
+try_sudo() {
+  if [[ "${EUID}" -eq 0 ]]; then
+    try_run "$@"
+  else
+    try_run sudo "$@"
+  fi
+}
+
+have() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+is_systemd_service_active() {
+  local service="$1"
+
+  have systemctl && systemctl is-active --quiet "$service" >/dev/null 2>&1
+}
+
+is_wsl() {
+  [[ -r /proc/version ]] && grep -qiE 'microsoft|wsl' /proc/version
+}
+
+flushed=0
+attempted=0
+
+case "$(uname -s)" in
+  Darwin)
+    if have dscacheutil; then
+      try_run dscacheutil -flushcache && flushed=1
+    fi
+
+    if have killall; then
+      try_sudo killall -HUP mDNSResponder && flushed=1
+    fi
+    ;;
+
+  Linux)
+    if is_wsl && have powershell.exe; then
+      try_run powershell.exe -NoProfile -Command 'ipconfig /flushdns' && flushed=1
+    fi
+
+    if have resolvectl; then
+      try_run resolvectl flush-caches && flushed=1
+    elif have systemd-resolve; then
+      try_run systemd-resolve --flush-caches && flushed=1
+    fi
+
+    if have nmcli && nmcli general status >/dev/null 2>&1; then
+      if try_run nmcli general reload dns-full || try_run nmcli general reload; then
+        flushed=1
+      fi
+    fi
+
+    if [[ "$flushed" -eq 0 ]] && is_systemd_service_active NetworkManager.service; then
+      try_sudo systemctl reload NetworkManager.service && flushed=1
+    elif [[ "$flushed" -eq 0 ]] && is_systemd_service_active networking.service; then
+      try_sudo systemctl restart networking.service && flushed=1
+    elif [[ "$flushed" -eq 0 && -x /etc/init.d/networking ]]; then
+      try_sudo /etc/init.d/networking restart && flushed=1
+    fi
+
+    if is_systemd_service_active dnsmasq.service; then
+      try_sudo systemctl restart dnsmasq.service && flushed=1
+    elif have service && service dnsmasq status >/dev/null 2>&1; then
+      try_sudo service dnsmasq restart && flushed=1
+    fi
+
+    if is_systemd_service_active nscd.service; then
+      try_sudo systemctl restart nscd.service && flushed=1
+    elif have service && service nscd status >/dev/null 2>&1; then
+      try_sudo service nscd restart && flushed=1
+    fi
+    ;;
+
+  FreeBSD|OpenBSD|NetBSD)
+    if have service && service nscd status >/dev/null 2>&1; then
+      try_sudo service nscd restart && flushed=1
+    fi
+    ;;
+esac
+
+if [[ "$flushed" -eq 0 ]]; then
+  if [[ "$attempted" -eq 1 ]]; then
+    cat >&2 <<'EOF'
+dns-flush: supported DNS cache or network manager command was found, but did not complete.
+Check the command output above for permission or service errors.
+EOF
+    exit 1
+  fi
+
+  cat >&2 <<'EOF'
+dns-flush: no supported DNS cache or network manager found.
+Supported: systemd-resolved, NetworkManager, networking.service, dnsmasq, nscd, WSL ipconfig, macOS mDNSResponder.
+EOF
+  exit 1
+fi
