@@ -22,7 +22,9 @@ vim.o.wildmode = "longest:list,full"
 
 -- Enable persistent undo
 vim.o.undofile = true
-vim.o.undodir = os.getenv("HOME") .. "/.local/share/nvim/undo"
+local undo_dir = vim.fn.stdpath("state") .. "/undo"
+vim.fn.mkdir(undo_dir, "p")
+vim.opt.undodir = undo_dir .. "//"
 
 -- Show indent markers
 vim.o.list = true

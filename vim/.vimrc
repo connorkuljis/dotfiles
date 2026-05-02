@@ -61,6 +61,20 @@ highlight String    ctermfg=magenta guifg=#FF00FF
 " Enable persistent undo
 set undofile
 
+" Keep undo files in a dedicated editor-specific directory instead of next to edited files
+if has('nvim')
+	let s:undo_dir = stdpath('state') . '/undo'
+elseif has('win32') || has('win64')
+	let s:undo_dir = expand('~/vimfiles/undo')
+else
+	let s:undo_dir = expand('~/.vim/undo')
+endif
+
+if !isdirectory(s:undo_dir)
+	silent! call mkdir(s:undo_dir, 'p')
+endif
+let &undodir = substitute(s:undo_dir, '\\', '/', 'g') . '//'
+
 " ============================================================================
 " Keymaps
 " ============================================================================
