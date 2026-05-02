@@ -1,0 +1,4 @@
+[[mgr.prepend_keymap]]
+on = "p"
+run = "shell -- mpv-shuffle %s"
+desc = "mpv-shuffle current selected file(s)"
