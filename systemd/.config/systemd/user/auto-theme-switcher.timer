@@ -1,0 +1,11 @@
+[Unit]
+Description=Auto adjusts GNOME theme between dark and light to match the time
+
+[Timer]
+# 6pm
+OnCalendar=*-*-* 18:00:00
+# 9am
+OnCalendar=*-*-* 09:00:00
+
+[Install]
+WantedBy=timers.target
