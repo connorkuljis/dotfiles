@@ -5,14 +5,9 @@ if [ "$#" -eq 0 ]; then
 	exit 2
 fi
 
-fd \
-	-u \
-	-t f \
-	-e mp4 \
-	-e m4v \
-	-e gif \
-	-e webm \
-	. \
+find \
 	"$@" \
+	-type f \
+	\( -name '*.mp4' -o -name '*.m4v' -o -name '*.gif' -o -name '*.webm'  \) \
 	| shuf \
 	| mpv --playlist=-
