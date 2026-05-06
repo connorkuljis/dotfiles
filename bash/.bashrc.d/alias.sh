@@ -1,6 +1,6 @@
 # ~/.bashrc.d/alias.sh
-alias ls='ls --color=auto'
+# alias zj="zellij --layout compact"
 alias now='date +"%H:%M:%S"'
-alias yz="yazi"
-alias zj="zellij --layout compact"
 alias lg="lazygit"
+alias ls="exa --icons"
+
