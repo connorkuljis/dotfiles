@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
 set_theme() {
   if [[ "$1" == "dark" ]]; then
@@ -32,6 +32,5 @@ if [[ -z "$1" ]]; then
     set_theme light
   fi
 else
-  set_theme $1
+  set_theme "$1"
 fi
-

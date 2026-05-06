@@ -4,13 +4,13 @@ After=suspend.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/gnome-theme-switcher
+ExecStart=%h/.local/bin/gnome-theme-switcher
 TimeoutSec=30
 StandardOutput=journal
 PrivateTmp=true
 ProtectSystem=full
 ProtectHome=read-only
+ReadWritePaths=%h/.config/dconf %t/dconf
 
 [Install]
 WantedBy=default.target
-
