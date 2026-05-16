@@ -12,24 +12,28 @@ if [[ ! "$(command -v tailscale)" ]]; then
 	exit 1
 fi
 
+
 operator="${USER}"
+exit_node="jp-tyo-wg-001.mullvad.ts.net"
 
 (
 	set -x
 	sudo tailscale down
 	sudo tailscale up \
 		--reset \
-		--accept-routes \
-		--operator="${operator}"
+		--accept-routes=false \
+		--operator="${operator}" \
+		--exit-node="${exit_node}"
 )
 
-echo -e "\n${BLUE}● waiting: tailscale is reconnecting${RESET}"
+
+echo -e "\n${BLUE}● waiting: tailscale is reconnecting using exit-node ${exit_node}${RESET}"
 
 if ! tailscale wait --timeout=30s; then
 	echo -e "${RED}× error: tailscale did not connect within 30 seconds.${RESET}"
 	exit 1
 fi
 
-echo -e "${GREEN}● ok: tailscale connected${RESET}"
+echo -e "${GREEN}● ok: tailscale connected using exit-node ${exit_node}${RESET}"
 echo -e "${BLUE}● ip:${RESET}"
 tailscale ip
