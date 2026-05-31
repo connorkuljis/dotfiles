@@ -1,9 +1,21 @@
-- name: My first play
-  hosts: myhosts
+- name: Dotfiles setup
+  hosts: localhost
+  become: true
   tasks:
-   - name: Ping my hosts
-     ansible.builtin.ping:
+   - name: Update apt cache
+     ansible.builtin.apt:
+       update_cache: yes
+       cache_valid_time: 3600
+     when: ansible_os_family == "Debian"
 
-   - name: Print message
-     ansible.builtin.debug:
-       msg: Hello world
+   - name: Ensure make is installed
+     ansible.builtin.apt:
+       name: make
+       state: present
+     when: ansible_os_family == "Debian"
+
+   - name: Verify make installation
+     ansible.builtin.command:
+       cmd: make --version
+     register: make_version
+     changed_when: false
