@@ -10,7 +10,11 @@ export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:~/go/bin
 
 # Source rust/cargo environment
-. "$HOME/.cargo/env"
+if [ -f "$HOME/.cargo/env" ]; then
+    . "$HOME/.cargo/env"
+elif [ -d "$HOME/.cargo/bin" ]; then
+    export PATH="$HOME/.cargo/bin:$PATH"
+fi
 
 # Add bun innstall path
 export BUN_INSTALL="$HOME/.bun"
