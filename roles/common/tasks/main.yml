@@ -74,6 +74,7 @@
     cmd: cargo-binstall -y ripgrep fd-find bat eza zoxide yazi-fm starship
   environment:
     PATH: "{{ lookup('env', 'PATH') }}:{{ lookup('env', 'HOME') }}/.cargo/bin"
+    CARGO_HOME: "{{ lookup('env', 'HOME') }}/.cargo"
   register: binstall_packages
   changed_when: "'Installing' in binstall_packages.stdout or 'downloaded' in binstall_packages.stdout"
   timeout: 300

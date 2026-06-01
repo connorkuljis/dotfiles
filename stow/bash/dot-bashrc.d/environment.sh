@@ -9,6 +9,9 @@ export PATH=$PATH:/usr/local/go/bin
 # Add user programs to go path
 export PATH=$PATH:~/go/bin
 
+# Set cargo home to user directory
+export CARGO_HOME="$HOME/.cargo"
+
 # Source rust/cargo environment
 if [ -f "$HOME/.cargo/env" ]; then
     . "$HOME/.cargo/env"
