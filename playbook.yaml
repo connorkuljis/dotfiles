@@ -1,5 +1,5 @@
 - name: Dotfiles setup
-  hosts: localhost
+  hosts: localhost,local
   become: true
   tasks:
    - name: Update apt cache
@@ -23,16 +23,22 @@
      register: make_version
      changed_when: false
 
-   - name: Ensure stow directory exists
+   - name: Ensure stow directory exists in home
      ansible.builtin.file:
-       path: "{{ playbook_dir }}/stow"
+       path: "{{ lookup('env', 'HOME') }}/.stow"
        state: directory
        mode: '0755'
+
+   - name: Copy stow directory to home
+     ansible.builtin.synchronize:
+       src: "{{ playbook_dir }}/stow/"
+       dest: "{{ lookup('env', 'HOME') }}/.stow/"
+       delete: yes
 
    - name: Stow all packages
      ansible.builtin.shell:
        cmd: |
-         cd {{ playbook_dir }}/stow
+         cd {{ lookup('env', 'HOME') }}/.stow
          for dir in */; do
            stow --verbose "${dir%/}"
          done
