@@ -1,0 +1,26 @@
+# This is the configuration file for Ghostty.
+#
+# This template file has been automatically created at the following
+# path since Ghostty couldn't find any existing config files on your system:
+#
+#   /home/connor/.config/ghostty/config
+#
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+#
+# Additionally, each config option is also explained in detail
+# on Ghostty's website, at https://ghostty.org/docs/config.
+
+font-family = Hasklig
+# font-family = B162Liga Nerd Font
+font-size = 14
+
+# theme = iTerm2 Default
+# theme = Builtin Solarized Dark
+theme = OneHalfDark
+# theme = light:OneHalfLight,dark:OneHalfDark
+# theme = light:Material,dark:MaterialDarker
+
+window-padding-balance = true
+
+copy-on-select = clipboard

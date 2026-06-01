@@ -1,0 +1,30 @@
+[general]
+import = ["./themes/dark.toml"]
+live_config_reload = true
+
+[window]
+decorations = "Full"
+opacity = 0.9
+
+[font]
+size = 16.0
+
+[font.normal]
+family = "Hasklug Nerd Font Mono"
+style = "Regular"
+
+[font.bold]
+family = "Hasklug Nerd Font Mono"
+style = "Bold"
+
+[font.italic]
+family = "Hasklug Nerd Font Mono"
+style = "Italic"
+
+[font.bold_italic]
+family = "Hasklug Nerd Font Mono"
+style = "Bold Italic"
+
+[[keyboard.bindings]]
+key = "F11"
+action = "ToggleFullscreen"

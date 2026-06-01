@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ "$#" -eq 0 ]; then
+	echo "usage: mpv-shuffle FILE_OR_DIR..." >&2
+	exit 2
+fi
+
+fd \
+	-u \
+	-t f \
+	-e mp4 \
+	-e m4v \
+	-e gif \
+	-e webm \
+	. \
+	"$@" \
+	| shuf \
+	| mpv --playlist=-

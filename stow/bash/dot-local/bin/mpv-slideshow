@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ "$#" -eq 0 ]; then
+	echo "usage: mpv-slideshow FILE_OR_DIR..." >&2
+	exit 2
+fi
+
+fd \
+	-u \
+	-t f \
+	-e jpg \
+	-e png \
+	-e gif \
+	-e webp \
+	. \
+	"$@" \
+	| shuf \
+	| mpv --playlist=-

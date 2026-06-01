@@ -30,10 +30,10 @@
        mode: '0755'
 
    - name: Copy stow directory to home
-     ansible.builtin.synchronize:
+     ansible.builtin.copy:
        src: "{{ playbook_dir }}/stow/"
        dest: "{{ lookup('env', 'HOME') }}/.stow/"
-       delete: yes
+       mode: preserve
 
    - name: Stow all packages
      ansible.builtin.shell:

@@ -1,0 +1,17 @@
+--embed-metadata
+--embed-thumbnail
+--embed-chapters
+--embed-subs
+--no-playlist
+
+--sub-format "srt"
+--sub-langs "en"
+--output-na-placeholder	"unknown"
+
+--paths "/mnt/ultrstar/crypt/yt-dlp"
+--download-archive "/mnt/ultrastar/crypt/yt-dlp/archive.txt"
+
+--output "%(extractor)s/%(uploader_id)s/%(uploader)s - %(upload_date)s - %(title)s - [%(id)s].%(ext)s"
+--format "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
+
+ 
