@@ -11,6 +11,9 @@
      - tmux
      - stow
      - rsync
+     - build-essential
+     - fonts-font-awesome
+     - fonts-noto-color-emoji
     state: present
   when: ansible_facts["os_family"] == "Debian"
 
@@ -36,7 +39,7 @@
     cmd: |
       cd /opt/dotfiles-stow
       for dir in */; do
-        stow --verbose --dotfiles --adopt -t {{ lookup('env', 'HOME') }} "${dir%/}"
+        stow --verbose --dotfiles --restow -t {{ lookup('env', 'HOME') }} "${dir%/}"
       done
   register: stow_result
   changed_when: "'LINK' in stow_result.stdout"
@@ -68,8 +71,10 @@
   register: cargo_binstall_install
 
 - name: Install common Rust binaries via cargo-binstall
-  ansible.builtin.shell:
-    cmd: "{{ lookup('env', 'HOME') }}/.cargo/bin/cargo-binstall -y {{ item }}"
+  ansible.builtin.command:
+    cmd: cargo-binstall -y {{ item }}
+  environment:
+    PATH: "{{ lookup('env', 'PATH') }}:{{ lookup('env', 'HOME') }}/.cargo/bin"
   loop:
     - ripgrep
     - fd-find
@@ -79,8 +84,7 @@
     - yazi-fm
     - starship
   register: binstall_packages
-  when:
-    - cargo_binstall_check.stat.exists or (cargo_binstall_install is defined and cargo_binstall_install.rc == 0)
+  when: cargo_binstall_check.stat.exists
 
 - name: Check if nvim is installed
   ansible.builtin.stat:

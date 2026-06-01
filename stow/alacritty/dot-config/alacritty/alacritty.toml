@@ -10,20 +10,20 @@ opacity = 0.9
 size = 16.0
 
 [font.normal]
-family = "Hasklug Nerd Font Mono"
-style = "Regular"
+family = "DejaVu Sans Mono"
+style = "Book"
 
 [font.bold]
-family = "Hasklug Nerd Font Mono"
+family = "DejaVu Sans Mono"
 style = "Bold"
 
 [font.italic]
-family = "Hasklug Nerd Font Mono"
-style = "Italic"
+family = "DejaVu Sans Mono"
+style = "Oblique"
 
 [font.bold_italic]
-family = "Hasklug Nerd Font Mono"
-style = "Bold Italic"
+family = "DejaVu Sans Mono"
+style = "Bold Oblique"
 
 [[keyboard.bindings]]
 key = "F11"
