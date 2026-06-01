@@ -1,0 +1,90 @@
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Ensure required packages are installed
+  ansible.builtin.apt:
+    name:
+     - make
+     - tmux
+     - stow
+    state: present
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Verify make installation
+  ansible.builtin.command:
+    cmd: make --version
+  register: make_version
+  changed_when: false
+
+- name: Check if cargo is installed
+  ansible.builtin.command:
+    cmd: cargo --version
+  register: cargo_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Rust via rustup
+  ansible.builtin.shell:
+    cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  when: cargo_check.rc != 0
+  become: true
+  become_user: "{{ ansible_facts['user_id'] }}"
+  register: rustup_install
+  failed_when: false
+
+- name: Check if cargo-binstall is installed
+  ansible.builtin.command:
+    cmd: cargo-binstall --version
+  register: cargo_binstall_check
+  changed_when: false
+  failed_when: false
+
+- name: Install cargo-binstall
+  ansible.builtin.shell:
+    cmd: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release | bash
+  when: cargo_binstall_check.rc != 0
+  become: true
+  become_user: "{{ ansible_facts['user_id'] }}"
+  register: cargo_binstall_install
+  failed_when: false
+
+- name: Install common Rust binaries via cargo-binstall
+  ansible.builtin.command:
+    cmd: cargo binstall {{ item }}
+  become: true
+  become_user: "{{ ansible_facts['user_id'] }}"
+  loop:
+    - ripgrep
+    - fd-find
+    - bat
+    - eza
+    - zoxide
+    - yazi-fm
+  when: cargo_binstall_check.rc == 0 or cargo_binstall_install.rc == 0
+  register: binstall_packages
+  failed_when: false
+
+- name: Ensure stow directory exists in home
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.stow"
+    state: directory
+    mode: '0755'
+
+- name: Copy stow directory to home
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/stow/"
+    dest: "{{ lookup('env', 'HOME') }}/.stow/"
+    mode: preserve
+
+- name: Stow all packages
+  ansible.builtin.shell:
+    cmd: |
+      cd {{ lookup('env', 'HOME') }}/.stow
+      for dir in */; do
+        stow --verbose "${dir%/}"
+      done
+  register: stow_result
+  changed_when: "'LINK' in stow_result.stdout"
