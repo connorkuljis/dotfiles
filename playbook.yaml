@@ -2,5 +2,5 @@
   hosts: localhost,local
   become: true
   roles:
-    - common
-    - desktop
+    - { role: common, tags: ['common'] }
+    - { role: desktop, tags: ['desktop'] }
