@@ -1,10 +1,7 @@
 SHELL := /bin/bash
 ACTIVATE = source ~/.venvs/ansible/bin/activate
 
-.PHONY: playbook activate
+.PHONY: playbook
 
-activate:
-	$(ACTIVATE)
-
-playbook: activate
+playbook:
 	$(ACTIVATE) && ansible-playbook -i inventory.ini playbook.yaml
