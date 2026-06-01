@@ -21,8 +21,7 @@
   ansible.builtin.file:
     path: /opt/dotfiles-stow
     state: directory
-    mode: '0755'
-  become: true
+    mode: '0775'
 
 - name: Copy stow directory (only changed files)
   ansible.builtin.synchronize:
@@ -72,18 +71,12 @@
 
 - name: Install common Rust binaries via cargo-binstall
   ansible.builtin.command:
-    cmd: cargo-binstall -y {{ item }}
+    cmd: cargo-binstall -y ripgrep fd-find bat eza zoxide yazi-fm starship
   environment:
     PATH: "{{ lookup('env', 'PATH') }}:{{ lookup('env', 'HOME') }}/.cargo/bin"
-  loop:
-    - ripgrep
-    - fd-find
-    - bat
-    - eza
-    - zoxide
-    - yazi-fm
-    - starship
   register: binstall_packages
+  changed_when: "'Installing' in binstall_packages.stdout or 'downloaded' in binstall_packages.stdout"
+  timeout: 300
   when: cargo_binstall_check.stat.exists
 
 - name: Check if nvim is installed
