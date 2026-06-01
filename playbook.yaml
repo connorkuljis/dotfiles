@@ -1,5 +1,5 @@
 - name: Dotfiles setup
-  hosts: localhost,local
+  hosts: localhost,local,myhosts
   become: true
   roles:
     - { role: common, tags: ['common'] }
