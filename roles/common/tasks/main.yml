@@ -11,35 +11,30 @@
      - tmux
      - stow
      - rsync
+     - git
      - build-essential
      - fonts-font-awesome
      - fonts-noto-color-emoji
     state: present
   when: ansible_facts["os_family"] == "Debian"
 
-- name: Ensure stow directory exists
-  ansible.builtin.file:
-    path: /opt/dotfiles-stow
-    state: directory
-    mode: '0775'
-
-- name: Copy stow directory (only changed files)
-  ansible.builtin.synchronize:
-    src: "{{ playbook_dir }}/stow/"
-    dest: /opt/dotfiles-stow/
-    delete: no
-    recursive: yes
-    times: yes
-    checksum: yes
-  register: stow_sync
+- name: Clone dotfiles repo
+  ansible.builtin.git:
+    repo: https://github.com/connorkuljis/dotfiles.git
+    dest: ~/dotfiles
+    version: ansible
+    update: yes
+    force: no
+  become: false
 
 - name: Stow all packages
   ansible.builtin.shell:
     cmd: |
-      cd /opt/dotfiles-stow
+      cd ~/dotfiles/stow
       for dir in */; do
-        stow --verbose --dotfiles --restow -t {{ lookup('env', 'HOME') }} "${dir%/}"
+        stow --verbose --dotfiles --restow -t ~ "${dir%/}"
       done
+  become: false
   register: stow_result
   changed_when: "'LINK' in stow_result.stdout"
 
