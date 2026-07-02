@@ -13,3 +13,4 @@ packages:
   - google-noto-color-emoji-fonts
   - jq
   - cowsay
+  - gh

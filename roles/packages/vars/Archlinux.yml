@@ -13,3 +13,4 @@ packages:
   - noto-fonts-emoji
   - jq
   - cowsay
+  - gh
