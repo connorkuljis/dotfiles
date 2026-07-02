@@ -21,6 +21,8 @@
     times: yes
     checksum: yes
   become: false
+  rsync_opts:
+    - "--exclude=nvim/.config/nvim/lazy-lock.json"
   register: stow_sync
 
 - name: Stow all packages
