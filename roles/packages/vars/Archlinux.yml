@@ -1,6 +1,6 @@
 ---
 # Distro-specific system package list for Arch Linux.
-# Names differ from Debian; lazygit is available in the repos.
+# Names differ from Debian; lazygit is installed via the go role.
 packages:
   - make
   - tmux
@@ -12,5 +12,4 @@ packages:
   - ttf-font-awesome
   - noto-fonts-emoji
   - jq
-  - lazygit
   - cowsay

@@ -1,7 +1,6 @@
 ---
 # Distro-specific system package list for the RedHat family (Fedora/RHEL).
-# Names differ from Debian; lazygit is intentionally omitted here and
-# installed via `go install` in the go role (not in Fedora default repos).
+# Names differ from Debian; lazygit is installed via the go role.
 packages:
   - make
   - tmux

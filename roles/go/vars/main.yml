@@ -1,0 +1,9 @@
+---
+# Go toolchain version to install (https://go.dev/dl/).
+go_version: "1.24.4"
+
+# Go-based CLI tools installed via `go install <pkg>@latest`.
+# These are distro-independent, so they cover tools that may be absent from
+# a given distro's repos (e.g. lazygit on Fedora).
+go_tools:
+  - github.com/jesseduffield/lazygit@latest
