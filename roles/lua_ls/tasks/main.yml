@@ -1,0 +1,66 @@
+---
+# lua-language-server is the LSP for Lua, used by Neovim's lua config.
+# https://github.com/LuaLS/lua-language-server
+#
+# The release asset filename embeds the version (e.g.
+# lua-language-server-3.18.2-linux-x64.tar.gz), so we resolve the latest
+# linux-x64 asset URL via the GitHub API rather than a static URL.
+
+- name: Query latest lua-language-server release for the linux-x64 asset
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/LuaLS/lua-language-server/releases/latest
+    return_content: true
+    headers:
+      Accept: application/vnd.github+json
+  register: lua_ls_release
+
+- name: Resolve linux-x64 asset URL
+  ansible.builtin.set_fact:
+    lua_ls_asset_url: >-
+      {{ (lua_ls_release.json.assets
+          | selectattr('name', 'match', 'lua-language-server-.*-linux-x64\\.tar\\.gz')
+          | map(attribute='browser_download_url')
+          | first) }}
+    lua_ls_version: "{{ lua_ls_release.json.tag_name }}"
+
+- name: Check if lua-language-server is installed
+  ansible.builtin.stat:
+    path: "/opt/lua-language-server/{{ lua_ls_version }}/bin/lua-language-server"
+  register: lua_ls_check
+
+- name: Create lua-language-server install directory
+  ansible.builtin.file:
+    path: "/opt/lua-language-server/{{ lua_ls_version }}"
+    state: directory
+    mode: '0755'
+  when: not lua_ls_check.stat.exists
+  become: true
+
+- name: Download lua-language-server archive
+  ansible.builtin.get_url:
+    url: "{{ lua_ls_asset_url }}"
+    dest: "/tmp/lua-language-server-{{ lua_ls_version }}.tar.gz"
+    mode: '0644'
+  when: not lua_ls_check.stat.exists
+
+- name: Extract lua-language-server archive
+  ansible.builtin.unarchive:
+    src: "/tmp/lua-language-server-{{ lua_ls_version }}.tar.gz"
+    dest: "/opt/lua-language-server/{{ lua_ls_version }}"
+    remote_src: yes
+  when: not lua_ls_check.stat.exists
+  become: true
+
+- name: Clean up lua-language-server archive
+  ansible.builtin.file:
+    path: "/tmp/lua-language-server-{{ lua_ls_version }}.tar.gz"
+    state: absent
+  when: not lua_ls_check.stat.exists
+
+- name: Create lua-language-server symlink in /usr/local/bin
+  ansible.builtin.file:
+    src: "/opt/lua-language-server/{{ lua_ls_version }}/bin/lua-language-server"
+    dest: /usr/local/bin/lua-language-server
+    state: link
+    force: true
+  become: true

@@ -10,4 +10,5 @@
     - { role: go,        tags: ['go', 'common'] }
     - { role: node,      tags: ['node', 'common'] }
     - { role: neovim,    tags: ['neovim', 'common'] }
+    - { role: lua_ls,     tags: ['lua_ls', 'common'] }
     - { role: desktop,   tags: ['desktop'] }
