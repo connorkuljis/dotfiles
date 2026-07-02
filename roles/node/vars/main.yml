@@ -1,0 +1,4 @@
+---
+nvm_version: "v0.40.5"
+npm_globals:
+  - neovim

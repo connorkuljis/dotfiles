@@ -1,0 +1,10 @@
+---
+rust_tools:
+  - ripgrep
+  - fd-find
+  - bat
+  - eza
+  - zoxide
+  - yazi-fm
+  - starship
+  - bws

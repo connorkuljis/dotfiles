@@ -1,0 +1,16 @@
+---
+# Distro-specific system package list for Arch Linux.
+# Names differ from Debian; lazygit is available in the repos.
+packages:
+  - make
+  - tmux
+  - stow
+  - rsync
+  - curl
+  - git
+  - base-devel
+  - ttf-font-awesome
+  - noto-fonts-emoji
+  - jq
+  - lazygit
+  - cowsay

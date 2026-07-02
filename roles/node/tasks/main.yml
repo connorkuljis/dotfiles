@@ -1,0 +1,35 @@
+---
+- name: Check if nvm is installed
+  ansible.builtin.stat:
+    path: "{{ lookup('env', 'HOME') }}/.nvm/nvm.sh"
+  register: nvm_check
+
+- name: Install nvm
+  ansible.builtin.shell:
+    cmd: "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_version }}/install.sh | bash"
+  environment:
+    NVM_DIR: "{{ lookup('env', 'HOME') }}/.nvm"
+    PROFILE: /dev/null
+  when: not nvm_check.stat.exists
+  register: nvm_install
+  become: false
+
+# Use the nvm dir existence as the canary for "node/npm toolchain present".
+# Global npm packages are installed on demand; opt-in refresh via
+# update_npm_tools=true.
+- name: Check if a node version is installed via nvm
+  ansible.builtin.stat:
+    path: "{{ lookup('env', 'HOME') }}/.nvm/versions/node"
+  register: nvm_node_check
+
+- name: Install latest LTS node and global npm packages
+  ansible.builtin.shell:
+    cmd: |
+      source ~/.nvm/nvm.sh
+      nvm install --lts
+      nvm use --lts
+      npm install -g {{ npm_globals | join(' ') }}
+    executable: /bin/bash
+  when:
+    - not nvm_node_check.stat.exists or ((update_npm_tools | default(false) | bool))
+  become: false

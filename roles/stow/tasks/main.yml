@@ -1,0 +1,35 @@
+---
+- name: Ensure stow directory exists
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.local/share/stow"
+    state: directory
+  become: false
+
+- name: Ensure local bin directory exists
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.local/bin"
+    state: directory
+    mode: '0755'
+  become: false
+
+- name: Copy stow directory (only changed files)
+  ansible.builtin.synchronize:
+    src: "{{ playbook_dir }}/stow/"
+    dest: "{{ lookup('env', 'HOME') }}/.local/share/stow/"
+    delete: yes
+    recursive: yes
+    times: yes
+    checksum: yes
+  become: false
+  register: stow_sync
+
+- name: Stow all packages
+  ansible.builtin.shell:
+    cmd: |
+      cd "{{ lookup('env', 'HOME') }}/.local/share/stow"
+      for dir in */; do
+        stow --verbose --restow --no-folding -t {{ lookup('env', 'HOME') }} "${dir%/}"
+      done
+  register: stow_result
+  changed_when: "'LINK' in stow_result.stdout"
+  become: false

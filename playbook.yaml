@@ -4,5 +4,9 @@
     ansible_python_interpreter: auto_silent
   become: true
   roles:
-    - { role: common, tags: ['common'] }
-    - { role: desktop, tags: ['desktop'] }
+    - { role: packages, tags: ['packages', 'common'] }
+    - { role: stow,      tags: ['stow', 'common'] }
+    - { role: rust,      tags: ['rust', 'common'] }
+    - { role: node,      tags: ['node', 'common'] }
+    - { role: neovim,    tags: ['neovim', 'common'] }
+    - { role: desktop,   tags: ['desktop'] }
