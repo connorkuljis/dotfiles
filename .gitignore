@@ -1,0 +1,12 @@
+# Ansible
+*.retry
+facts_cache/
+.ansible/
+__pycache__/
+
+# Python venv (local ansible env, not for the repo)
+.venv/
+venv/
+
+# OS/editor cruft
+.DS_Store
