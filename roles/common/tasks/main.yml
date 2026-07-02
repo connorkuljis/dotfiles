@@ -35,24 +35,31 @@
     mode: '0755'
   become: false
 
-- name: Check if ~/.local/bin is a stow-folded symlink
+# Legacy fix: older playbook runs stowed as root, leaving ~/.config and
+# ~/.local root-owned. With --no-folding below, stow (running as the user)
+# must unlink the old folded symlinks, which needs write access to those parent
+# dirs. Chown them back to the real user once so stow can unfold them.
+- name: Stat home directory for real owner (legacy)
   ansible.builtin.stat:
-    path: "{{ lookup('env', 'HOME') }}/.local/bin"
-  register: local_bin_stat
-
-# Older runs folded ~/.local/bin into a single symlink pointing into the
-# stow source tree. External installers (lazydocker, etc.) then wrote THROUGH
-# that symlink into the stow tree, which rsync --delete wiped every run.
-# Unfold it back into a real directory so installs land in the real dir.
-- name: Unfold ~/.local/bin symlink into a real directory
-  ansible.builtin.shell:
-    cmd: |
-      rm "{{ lookup('env', 'HOME') }}/.local/bin"
-      mkdir -p "{{ lookup('env', 'HOME') }}/.local/bin"
-      chmod 0755 "{{ lookup('env', 'HOME') }}/.local/bin"
-    executable: /bin/bash
+    path: "{{ lookup('env', 'HOME') }}"
+  register: home_owner_stat
   become: false
-  when: local_bin_stat.stat.islnk | default(false)
+
+- name: Find root-owned stow target directories (legacy)
+  ansible.builtin.shell:
+    cmd: >
+      find "{{ lookup('env', 'HOME') }}/.config" "{{ lookup('env', 'HOME') }}/.local"
+      -maxdepth 2 -type d -user root
+  register: legacy_root_dirs
+  changed_when: false
+  become: true
+
+- name: Chown root-owned target directories back to user (legacy)
+  ansible.builtin.command:
+    cmd: chown {{ home_owner_stat.stat.uid }}:{{ home_owner_stat.stat.gid }} {{ item }}
+  loop: "{{ legacy_root_dirs.stdout_lines }}"
+  become: true
+  when: legacy_root_dirs.stdout_lines | length > 0
   changed_when: true
 
 - name: Copy stow directory (only changed files)
@@ -70,7 +77,7 @@
     cmd: |
       cd /opt/dotfiles-stow
       for dir in */; do
-        stow --verbose --restow -t {{ lookup('env', 'HOME') }} "${dir%/}"
+        stow --verbose --restow --no-folding -t {{ lookup('env', 'HOME') }} "${dir%/}"
       done
   register: stow_result
   changed_when: "'LINK' in stow_result.stdout"
