@@ -1,5 +1,7 @@
 - name: Dotfiles setup
   hosts: localhost,myhosts
+  vars:
+    ansible_python_interpreter: auto_silent
   become: true
   roles:
     - { role: common, tags: ['common'] }

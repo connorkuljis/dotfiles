@@ -19,10 +19,10 @@ elif [ -d "$HOME/.cargo/bin" ]; then
     export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
-# Add bun innstall path
+# Add bun install path
 export BUN_INSTALL="$HOME/.bun"
-
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# Source LLM API keys
-# . "$HOME/.llm-api-keys.env"
+if [ -f "$HOME/.secrets" ]; then
+    source "$HOME/.secrets"
+fi

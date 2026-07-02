@@ -1,5 +1,10 @@
 # .bashrc
 
+case $- in
+    *i*) ;;
+    *) return ;;
+esac
+
 # Enable vi mode
 set -o vi
 

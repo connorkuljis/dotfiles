@@ -14,6 +14,7 @@
      - build-essential
      - fonts-font-awesome
      - fonts-noto-color-emoji
+     - ncurses-term
     state: present
   when: ansible_facts["os_family"] == "Debian"
 
@@ -23,11 +24,17 @@
     state: directory
     mode: '0775'
 
+- name: Ensure local bin directory exists
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.local/bin"
+    state: directory
+    mode: '0755'
+
 - name: Copy stow directory (only changed files)
   ansible.builtin.synchronize:
     src: "{{ playbook_dir }}/stow/"
     dest: /opt/dotfiles-stow/
-    delete: no
+    delete: yes
     recursive: yes
     times: yes
     checksum: yes
@@ -38,7 +45,7 @@
     cmd: |
       cd /opt/dotfiles-stow
       for dir in */; do
-        stow --verbose --dotfiles --restow -t {{ lookup('env', 'HOME') }} "${dir%/}"
+        stow --verbose --restow -t {{ lookup('env', 'HOME') }} "${dir%/}"
       done
   register: stow_result
   changed_when: "'LINK' in stow_result.stdout"
@@ -77,7 +84,6 @@
     CARGO_HOME: "{{ lookup('env', 'HOME') }}/.cargo"
   register: binstall_packages
   changed_when: "'Installing' in binstall_packages.stdout or 'downloaded' in binstall_packages.stdout"
-  timeout: 300
   when: cargo_binstall_check.stat.exists
 
 - name: Check if nvim is installed
