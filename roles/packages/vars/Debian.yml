@@ -15,3 +15,4 @@ packages:
   - jq
   - cowsay
   - gh
+  - clangd  # LSP for C/C++

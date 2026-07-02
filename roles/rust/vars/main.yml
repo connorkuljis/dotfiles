@@ -8,3 +8,4 @@ rust_tools:
   - yazi-fm
   - starship
   - bws
+  - ruff  # Python linter/formatter LSP

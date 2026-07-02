@@ -8,3 +8,4 @@ go_version: "1.24.4"
 go_tools:
   - github.com/jesseduffield/lazygit@latest
   - github.com/junegunn/fzf@latest
+  - golang.org/x/tools/gopls@latest  # gopls LSP
