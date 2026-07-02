@@ -1,0 +1,15 @@
+---
+# Distro-specific system package list for the RedHat family (Fedora/RHEL).
+# Names differ from Debian; lazygit is installed via the go role.
+packages:
+  - make
+  - tmux
+  - stow
+  - rsync
+  - curl
+  - git
+  - '@development-tools'        # build-essential equivalent
+  - gdouros-symbolic-fonts      # fonts-font-awesome equivalent
+  - google-noto-color-emoji-fonts
+  - jq
+  - cowsay

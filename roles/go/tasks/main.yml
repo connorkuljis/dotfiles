@@ -1,0 +1,45 @@
+---
+- name: Check if Go toolchain is installed
+  ansible.builtin.command:
+    cmd: /usr/local/go/bin/go version
+  register: go_check
+  changed_when: false
+  failed_when: false
+
+# lazygit was previously installed via the distro package manager (apt/dnf).
+# It now lives in go_tools below and is installed distro-independently via
+# `go install`. Remove any stale distro copy so it does not shadow
+# ~/go/bin/lazygit (which is appended to PATH).
+- name: Check for stale distro lazygit (legacy)
+  ansible.builtin.stat:
+    path: /usr/bin/lazygit
+  register: distro_lazygit_check
+
+- name: Remove stale distro lazygit package (legacy)
+  ansible.builtin.package:
+    name: lazygit
+    state: absent
+  when: distro_lazygit_check.stat.exists
+
+- name: Install Go toolchain
+  ansible.builtin.unarchive:
+    src: "https://go.dev/dl/go{{ go_version }}.linux-amd64.tar.gz"
+    dest: /usr/local
+    remote_src: yes
+  when: go_check.rc != 0
+  become: true
+
+# Canary: presence of the first go_tools binary implies the batch was run.
+- name: Check if a representative Go tool is installed
+  ansible.builtin.stat:
+    path: "{{ lookup('env', 'HOME') }}/go/bin/lazygit"
+  register: go_tools_check
+
+- name: Install Go CLI tools
+  ansible.builtin.shell:
+    cmd: "export PATH=$PATH:/usr/local/go/bin:{{ lookup('env', 'HOME') }}/go/bin && go install {{ item }}"
+    executable: /bin/bash
+  loop: "{{ go_tools }}"
+  when:
+    - not go_tools_check.stat.exists or ((update_go_tools | default(false) | bool))
+  become: false

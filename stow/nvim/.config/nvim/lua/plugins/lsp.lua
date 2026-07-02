@@ -23,15 +23,15 @@ local lsp = {
 				"zls",
 			}
 
-			-- List of required modules
+			-- nvim-lspconfig v2+ ships per-server definitions under lsp/ that are
+			-- picked up automatically by vim.lsp.config(). Avoid the deprecated
+			-- require('lspconfig')[server].setup() framework; instead merge our
+			-- capabilities into each config and enable it. (see :help lspconfig-nvim-0.11)
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
-			local lspconfig = require("lspconfig")
 
-			-- Configure each language server with the same capabilities
 			for _, server in ipairs(servers) do
-				lspconfig[server].setup({
-					capabilities = capabilities,
-				})
+				vim.lsp.config(server, { capabilities = capabilities })
+				vim.lsp.enable(server)
 			end
 
 			-- LSP Keybinds

@@ -1,0 +1,45 @@
+---
+- name: Check if cargo is installed
+  ansible.builtin.stat:
+    path: "{{ lookup('env', 'HOME') }}/.cargo/bin/cargo"
+  register: cargo_check
+
+- name: Install Rust via rustup
+  ansible.builtin.shell:
+    cmd: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  environment:
+    PATH: "{{ lookup('env', 'PATH') }}:{{ lookup('env', 'HOME') }}/.cargo/bin"
+  when: not cargo_check.stat.exists
+  register: rustup_install
+  become: false
+
+- name: Check if cargo-binstall is installed
+  ansible.builtin.stat:
+    path: "{{ lookup('env', 'HOME') }}/.cargo/bin/cargo-binstall"
+  register: cargo_binstall_check
+
+- name: Install cargo-binstall
+  ansible.builtin.shell:
+    cmd: curl -L https://github.com/cargo-bins/cargo-binstall/releases/latest/download/cargo-binstall-x86_64-unknown-linux-gnu.tgz -o /tmp/cargo-binstall.tgz && tar -xzf /tmp/cargo-binstall.tgz -C ~/.cargo/bin/ && rm /tmp/cargo-binstall.tgz
+  environment:
+    PATH: "{{ lookup('env', 'PATH') }}:{{ lookup('env', 'HOME') }}/.cargo/bin"
+  when: not cargo_binstall_check.stat.exists
+  register: cargo_binstall_install
+  become: false
+
+- name: Check if ripgrep is installed
+  ansible.builtin.stat:
+    path: "{{ lookup('env', 'HOME') }}/.cargo/bin/rg"
+  register: rg_check
+
+- name: Install common Rust binaries via cargo-binstall
+  ansible.builtin.command:
+    cmd: "cargo-binstall -y {{ rust_tools | join(' ') }}"
+  environment:
+    PATH: "{{ lookup('env', 'PATH') }}:{{ lookup('env', 'HOME') }}/.cargo/bin"
+    CARGO_HOME: "{{ lookup('env', 'HOME') }}/.cargo"
+  register: binstall_packages
+  changed_when: "'Installing' in binstall_packages.stdout or 'downloaded' in binstall_packages.stdout"
+  when:
+    - cargo_binstall_check.stat.exists or cargo_binstall_install.changed
+    - not rg_check.stat.exists or ((update_rust_tools | default(false) | bool))

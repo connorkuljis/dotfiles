@@ -1,0 +1,16 @@
+---
+# Distro-specific system package list.
+# Mapped 1:1 to package names for the Debian family (Debian/Ubuntu).
+packages:
+  - make
+  - tmux
+  - stow
+  - rsync
+  - curl
+  - git
+  - build-essential
+  - fonts-font-awesome
+  - fonts-noto-color-emoji
+  - ncurses-term
+  - jq
+  - cowsay
