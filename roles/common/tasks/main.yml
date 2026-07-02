@@ -1,7 +1,7 @@
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: yes
-    cache_valid_time: 3600
+    cache_valid_time: 86400
   when: ansible_facts["os_family"] == "Debian"
 
 - name: Ensure required packages are installed
@@ -84,6 +84,11 @@
   register: cargo_binstall_install
   become: false
 
+- name: Check if ripgrep is installed
+  ansible.builtin.stat:
+    path: "{{ lookup('env', 'HOME') }}/.cargo/bin/rg"
+  register: rg_check
+
 - name: Install common Rust binaries via cargo-binstall
   ansible.builtin.command:
     cmd: cargo-binstall -y ripgrep fd-find bat eza zoxide yazi-fm starship bws
@@ -92,7 +97,9 @@
     CARGO_HOME: "{{ lookup('env', 'HOME') }}/.cargo"
   register: binstall_packages
   changed_when: "'Installing' in binstall_packages.stdout or 'downloaded' in binstall_packages.stdout"
-  when: cargo_binstall_check.stat.exists or cargo_binstall_install.changed
+  when:
+    - cargo_binstall_check.stat.exists or cargo_binstall_install.changed
+    - not rg_check.stat.exists or (update_rust_tools | default(false))
 
 - name: Check if nvm is installed
   ansible.builtin.stat:
