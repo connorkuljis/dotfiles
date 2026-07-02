@@ -11,10 +11,14 @@
      - tmux
      - stow
      - rsync
+     - curl
+     - git
      - build-essential
      - fonts-font-awesome
      - fonts-noto-color-emoji
      - ncurses-term
+     - jq
+     - lazygit
     state: present
   when: ansible_facts["os_family"] == "Debian"
 
@@ -78,13 +82,41 @@
 
 - name: Install common Rust binaries via cargo-binstall
   ansible.builtin.command:
-    cmd: cargo-binstall -y ripgrep fd-find bat eza zoxide yazi-fm starship
+    cmd: cargo-binstall -y ripgrep fd-find bat eza zoxide yazi-fm starship bws
   environment:
     PATH: "{{ lookup('env', 'PATH') }}:{{ lookup('env', 'HOME') }}/.cargo/bin"
     CARGO_HOME: "{{ lookup('env', 'HOME') }}/.cargo"
   register: binstall_packages
   changed_when: "'Installing' in binstall_packages.stdout or 'downloaded' in binstall_packages.stdout"
   when: cargo_binstall_check.stat.exists
+
+- name: Check if nvm is installed
+  ansible.builtin.stat:
+    path: "{{ lookup('env', 'HOME') }}/.nvm/nvm.sh"
+  register: nvm_check
+
+- name: Install nvm
+  ansible.builtin.shell:
+    cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
+  environment:
+    NVM_DIR: "{{ lookup('env', 'HOME') }}/.nvm"
+    PROFILE: /dev/null
+  when: not nvm_check.stat.exists
+  register: nvm_install
+  become: false
+
+- name: Check if lazydocker is installed
+  ansible.builtin.stat:
+    path: "{{ lookup('env', 'HOME') }}/.local/bin/lazydocker"
+  register: lazydocker_check
+
+- name: Install lazydocker
+  ansible.builtin.shell:
+    cmd: curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
+  environment:
+    DIR: "{{ lookup('env', 'HOME') }}/.local/bin"
+  when: not lazydocker_check.stat.exists
+  register: lazydocker_install
 
 - name: Check if nvim is installed
   ansible.builtin.stat:
