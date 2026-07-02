@@ -1,0 +1,6 @@
+---
+# Neovim release channel to install: "nightly" or "stable".
+# Switching this value re-installs the other channel (the install dir is
+# channel-specific, so both can coexist on disk while the symlink points
+# at the active one).
+neovim_channel: "nightly"

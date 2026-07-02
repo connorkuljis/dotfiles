@@ -1,28 +1,43 @@
 ---
-- name: Check if nvim is installed
+# Derive the release URL and install dir from the chosen channel.
+- name: Set Neovim release facts
+  ansible.builtin.set_fact:
+    neovim_url: >-
+      {{ 'https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz'
+         if neovim_channel == 'stable'
+         else 'https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz' }}
+    neovim_dir: "/opt/nvim-{{ neovim_channel }}-linux-x86_64"
+
+- name: Check if active Neovim channel is installed
   ansible.builtin.stat:
-    path: /opt/nvim-linux-x86_64/bin/nvim
+    path: "{{ neovim_dir }}/bin/nvim"
   register: nvim_check
 
-- name: Download Neovim archive
+- name: Download Neovim archive ({{ neovim_channel }})
   ansible.builtin.get_url:
-    url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+    url: "{{ neovim_url }}"
     dest: /tmp/nvim-linux-x86_64.tar.gz
     mode: '0644'
   when: not nvim_check.stat.exists
 
-- name: Remove existing nvim directory
+- name: Remove existing nvim directory ({{ neovim_channel }})
   ansible.builtin.file:
-    path: /opt/nvim-linux-x86_64
+    path: "{{ neovim_dir }}"
     state: absent
   when: not nvim_check.stat.exists
   become: true
 
-- name: Extract Neovim archive
+- name: Extract Neovim archive ({{ neovim_channel }})
   ansible.builtin.unarchive:
     src: /tmp/nvim-linux-x86_64.tar.gz
     dest: /opt
     remote_src: yes
+  when: not nvim_check.stat.exists
+  become: true
+
+- name: Rename extracted dir to channel-specific name
+  ansible.builtin.command:
+    cmd: "mv /opt/nvim-linux-x86_64 {{ neovim_dir }}"
   when: not nvim_check.stat.exists
   become: true
 
@@ -34,7 +49,8 @@
 
 - name: Create nvim symlink in /usr/local/bin
   ansible.builtin.file:
-    src: /opt/nvim-linux-x86_64/bin/nvim
+    src: "{{ neovim_dir }}/bin/nvim"
     dest: /usr/local/bin/nvim
     state: link
+    force: true
   become: true
