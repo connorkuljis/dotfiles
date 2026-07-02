@@ -35,16 +35,6 @@
     mode: '0755'
   become: false
 
-# Legacy cleanup: older playbook versions copied stow to /opt/dotfiles-stow
-# (root-owned) and stowed from there. Remove the old copy and its parent so
-# stale symlinks into it are the only thing left to relink (handled below by
-# stow --restow from the new user-owned location).
-- name: Remove legacy /opt/dotfiles-stow copy (legacy)
-  ansible.builtin.file:
-    path: /opt/dotfiles-stow
-    state: absent
-  become: true
-
 - name: Copy stow directory (only changed files)
   ansible.builtin.synchronize:
     src: "{{ playbook_dir }}/stow/"
@@ -55,29 +45,6 @@
     checksum: yes
   become: false
   register: stow_sync
-
-# Legacy cleanup: remove symlinks in $HOME still pointing at the old
-# /opt/dotfiles-stow location so stow can relink them to the new
-# ~/.local/share/stow source without "existing target is not owned by stow"
-# conflicts. One-time migration.
-- name: Find stale symlinks pointing at legacy /opt/dotfiles-stow (legacy)
-  ansible.builtin.shell:
-    cmd: >
-      { find "{{ lookup('env', 'HOME') }}" -maxdepth 1 -type l -lname '*dotfiles-stow*';
-        find "{{ lookup('env', 'HOME') }}/.config" -type l -lname '*dotfiles-stow*';
-        find "{{ lookup('env', 'HOME') }}/.local/bin" -maxdepth 1 -type l -lname '*dotfiles-stow*'; } 2>/dev/null || true
-    executable: /bin/bash
-  register: legacy_stale_links
-  changed_when: false
-  become: false
-
-- name: Remove stale legacy stow symlinks (legacy)
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop: "{{ legacy_stale_links.stdout_lines }}"
-  become: false
-  when: legacy_stale_links.stdout_lines | length > 0
 
 - name: Stow all packages
   ansible.builtin.shell:
