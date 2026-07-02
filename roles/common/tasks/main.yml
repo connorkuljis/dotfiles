@@ -33,6 +33,7 @@
     path: "{{ lookup('env', 'HOME') }}/.local/bin"
     state: directory
     mode: '0755'
+  become: false
 
 - name: Copy stow directory (only changed files)
   ansible.builtin.synchronize:
@@ -53,6 +54,7 @@
       done
   register: stow_result
   changed_when: "'LINK' in stow_result.stdout"
+  become: false
 
 - name: Check if cargo is installed
   ansible.builtin.stat:
@@ -66,6 +68,7 @@
     PATH: "{{ lookup('env', 'PATH') }}:{{ lookup('env', 'HOME') }}/.cargo/bin"
   when: not cargo_check.stat.exists
   register: rustup_install
+  become: false
 
 - name: Check if cargo-binstall is installed
   ansible.builtin.stat:
@@ -79,6 +82,7 @@
     PATH: "{{ lookup('env', 'PATH') }}:{{ lookup('env', 'HOME') }}/.cargo/bin"
   when: not cargo_binstall_check.stat.exists
   register: cargo_binstall_install
+  become: false
 
 - name: Install common Rust binaries via cargo-binstall
   ansible.builtin.command:
@@ -88,7 +92,7 @@
     CARGO_HOME: "{{ lookup('env', 'HOME') }}/.cargo"
   register: binstall_packages
   changed_when: "'Installing' in binstall_packages.stdout or 'downloaded' in binstall_packages.stdout"
-  when: cargo_binstall_check.stat.exists
+  when: cargo_binstall_check.stat.exists or cargo_binstall_install.changed
 
 - name: Check if nvm is installed
   ansible.builtin.stat:
@@ -117,6 +121,7 @@
     DIR: "{{ lookup('env', 'HOME') }}/.local/bin"
   when: not lazydocker_check.stat.exists
   register: lazydocker_install
+  become: false
 
 - name: Check if nvim is installed
   ansible.builtin.stat:
@@ -157,3 +162,4 @@
     dest: /usr/local/bin/nvim
     state: link
   become: true
+
