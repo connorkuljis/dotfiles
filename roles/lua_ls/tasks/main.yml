@@ -18,7 +18,7 @@
   ansible.builtin.set_fact:
     lua_ls_asset_url: >-
       {{ (lua_ls_release.json.assets
-          | selectattr('name', 'match', 'lua-language-server-.*-linux-x64\\.tar\\.gz')
+          | selectattr('name', 'search', 'linux-x64\.tar\.gz$')
           | map(attribute='browser_download_url')
           | first) }}
     lua_ls_version: "{{ lua_ls_release.json.tag_name }}"
