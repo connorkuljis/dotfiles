@@ -35,6 +35,26 @@
     mode: '0755'
   become: false
 
+- name: Check if ~/.local/bin is a stow-folded symlink
+  ansible.builtin.stat:
+    path: "{{ lookup('env', 'HOME') }}/.local/bin"
+  register: local_bin_stat
+
+# Older runs folded ~/.local/bin into a single symlink pointing into the
+# stow source tree. External installers (lazydocker, etc.) then wrote THROUGH
+# that symlink into the stow tree, which rsync --delete wiped every run.
+# Unfold it back into a real directory so installs land in the real dir.
+- name: Unfold ~/.local/bin symlink into a real directory
+  ansible.builtin.shell:
+    cmd: |
+      rm "{{ lookup('env', 'HOME') }}/.local/bin"
+      mkdir -p "{{ lookup('env', 'HOME') }}/.local/bin"
+      chmod 0755 "{{ lookup('env', 'HOME') }}/.local/bin"
+    executable: /bin/bash
+  become: false
+  when: local_bin_stat.stat.islnk | default(false)
+  changed_when: true
+
 - name: Copy stow directory (only changed files)
   ansible.builtin.synchronize:
     src: "{{ playbook_dir }}/stow/"
