@@ -15,12 +15,11 @@ require("config.option")
 -- Load autocommands
 require("config.autocommand")
 
--- Set the colorscheme
-vim.cmd([[colorscheme onedark]])
+-- Colorscheme is set by the onedark.nvim plugin (see lua/plugins/themes.lua)
 
 -- Setup auto color scheme with default options
 require("custom.auto_color_scheme").setup({
-	enabled = true,
+	enabled = false,
 	auto_set_background = true,
 	fallback_theme = "dark",
 })

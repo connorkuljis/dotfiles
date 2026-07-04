@@ -1,0 +1,35 @@
+# USGC RETICLE — PN# 5200-020
+# Ported from USGC-RETICLE-ST.sublime-color-scheme
+# https://github.com/usgraphics/usgc-themes
+
+[colors.primary]
+background = '#000000'
+foreground = '#00A645'
+
+[colors.cursor]
+text   = '#000000'
+cursor = '#FFFFFF'
+
+[colors.selection]
+text       = '#0000FF'
+background = '#FFFFFF'
+
+[colors.normal]
+black   = '#000000'
+red     = '#CC3333'
+green   = '#00A645'
+yellow  = '#FFBF00'
+blue    = '#4466DD'
+magenta = '#AA44AA'
+cyan    = '#22AAAA'
+white   = '#999999'
+
+[colors.bright]
+black   = '#666600'
+red     = '#FF0000'
+green   = '#00FF00'
+yellow  = '#FFFF00'
+blue    = '#0000FF'
+magenta = '#FF00FF'
+cyan    = '#00FFFF'
+white   = '#FFFFFF'

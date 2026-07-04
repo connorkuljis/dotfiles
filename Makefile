@@ -1,11 +1,16 @@
 SHELL := /bin/bash
 ACTIVATE = source ~/.venvs/ansible/bin/activate
 
-.PHONY: playbook common desktop all update-tools update-rust-tools update-npm-tools
+.PHONY: playbook common desktop all local update-tools update-rust-tools update-npm-tools
 .PHONY: update-go-tools
 .PHONY: packages stow rust go node neovim
 
 playbook: all
+
+# Run against only the current machine (uses this host's real hostname)
+# Pass extra args via ARGS, e.g. `make local ARGS="--tags stow"`
+local:
+	$(ACTIVATE) && ansible-playbook -i inventory.ini playbook.yaml --limit $$(hostname) $(ARGS)
 
 # Baseline roles (everything except desktop GUI apps)
 common:

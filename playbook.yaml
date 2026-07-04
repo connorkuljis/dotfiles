@@ -4,11 +4,11 @@
     ansible_python_interpreter: auto_silent
   become: true
   roles:
-    - { role: packages, tags: ['packages', 'common'] }
-    - { role: stow,      tags: ['stow', 'common'] }
-    - { role: rust,      tags: ['rust', 'common'] }
-    - { role: go,        tags: ['go', 'common'] }
-    - { role: node,      tags: ['node', 'common'] }
-    - { role: neovim,    tags: ['neovim', 'common'] }
-    - { role: lua_ls,     tags: ['lua_ls', 'common'] }
-    - { role: desktop,   tags: ['desktop'] }
+    - { role: packages, tags: ["packages", "common"] }
+    - { role: stow, tags: ["stow", "common"] }
+    - { role: rust, tags: ["rust", "common"] }
+    - { role: go, tags: ["go", "common"] }
+    - { role: node, tags: ["node", "common"] }
+    - { role: neovim, tags: ["neovim", "common"] }
+    - { role: lua_ls, tags: ["lua_ls", "common"] }
+    - { role: desktop, tags: ["desktop"] }
