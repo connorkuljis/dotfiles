@@ -1,7 +1,7 @@
 ---
-- name: Ensure stow directory exists
+- name: Ensure dotfiles directory exists
   ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/.local/share/stow"
+    path: "{{ lookup('env', 'HOME') }}/.local/share/dotfiles"
     state: directory
   become: false
 
@@ -12,23 +12,23 @@
     mode: '0755'
   become: false
 
-- name: Copy stow directory (only changed files)
+- name: Copy dotfiles directory (only changed files)
   ansible.builtin.synchronize:
-    src: "{{ playbook_dir }}/stow/"
-    dest: "{{ lookup('env', 'HOME') }}/.local/share/stow/"
+    src: "{{ playbook_dir }}/dotfiles/"
+    dest: "{{ lookup('env', 'HOME') }}/.local/share/dotfiles/"
     delete: yes
     recursive: yes
     times: yes
     checksum: yes
+    rsync_opts:
+      - "--exclude=nvim/.config/nvim/lazy-lock.json"
   become: false
-  rsync_opts:
-    - "--exclude=nvim/.config/nvim/lazy-lock.json"
-  register: stow_sync
+  register: dotfiles_sync
 
 - name: Stow all packages
   ansible.builtin.shell:
     cmd: |
-      cd "{{ lookup('env', 'HOME') }}/.local/share/stow"
+      cd "{{ lookup('env', 'HOME') }}/.local/share/dotfiles"
       for dir in */; do
         stow --verbose --restow --no-folding -t {{ lookup('env', 'HOME') }} "${dir%/}"
       done

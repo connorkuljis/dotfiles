@@ -2,7 +2,8 @@
 nvm_version: "v0.40.5"
 npm_globals:
   - neovim
-  # Language servers (consumed by nvim-lspconfig; see stow/nvim/.../lsp.lua)
+  - "@earendil-works/pi-coding-agent"  # pi coding agent
+  # Language servers (consumed by nvim-lspconfig; see dotfiles/nvim/.../lsp.lua)
   - bash-language-server        # bashls
   - vscode-langservers-extracted # cssls, html, jsonls
   - typescript-language-server  # ts_ls (needs typescript peer)
