@@ -1,17 +1,17 @@
--- Use tabs instead of spaces
-vim.opt.expandtab = false
+-- Use 2 spaces for indentation (house style; matches .stylua.toml)
+vim.opt.expandtab = true
 
 -- Disable smart indent (use treesitter indent)
 vim.opt.smartindent = false
 
--- Set tab width to 4 spaces
-vim.opt.tabstop = 4
+-- Set tab width to 2 spaces
+vim.opt.tabstop = 2
 
--- Set shift width to 4 spaces
-vim.opt.shiftwidth = 4
+-- Set shift width to 2 spaces
+vim.opt.shiftwidth = 2
 
--- Set soft tab to be 4 spaces too, since we are using tabs for indenting
-vim.opt.softtabstop = 4
+-- Set soft tab to 2 spaces too
+vim.opt.softtabstop = 2
 
 -- Enable relative line numbers
 vim.opt.relativenumber = true

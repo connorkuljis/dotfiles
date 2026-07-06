@@ -1,5 +1,11 @@
--- JSON convention: 2 spaces (overrides global tab/4 default set in
--- lua/config/option.lua, which is tailored for Lua/stylua).
+-- JSON convention: 2 spaces. The global default in lua/config/option.lua
+-- is also 2 spaces; this ftplugin pins it explicitly for JSON so it stays
+-- correct if the global ever changes.
+--
+-- The `jsonls` language server formats on save (LspAttach -> BufWritePre
+-- autocmd in lua/plugins/lsp.lua). vim.lsp.buf.format() forwards this
+-- buffer's shiftwidth/expandtab to the server as tabSize/insertSpaces,
+-- so the values here are honored.
 vim.opt_local.expandtab = true
 vim.opt_local.shiftwidth = 2
 vim.opt_local.tabstop = 2

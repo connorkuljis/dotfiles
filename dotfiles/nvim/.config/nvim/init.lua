@@ -19,12 +19,12 @@ require("config.autocommand")
 
 -- Setup auto color scheme with default options
 require("custom.auto_color_scheme").setup({
-	enabled = false,
-	auto_set_background = true,
-	fallback_theme = "dark",
+  enabled = false,
+  auto_set_background = true,
+  fallback_theme = "dark",
 })
 
 require("custom.radio_chatter").setup({
-	enabled = false,
-	backend = "auto",
+  enabled = false,
+  backend = "auto",
 })
