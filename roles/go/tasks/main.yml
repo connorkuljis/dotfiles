@@ -6,20 +6,40 @@
   changed_when: false
   failed_when: false
 
-# lazygit was previously installed via the distro package manager (apt/dnf).
-# It now lives in go_tools below and is installed distro-independently via
-# `go install`. Remove any stale distro copy so it does not shadow
-# ~/go/bin/lazygit (which is appended to PATH).
-- name: Check for stale distro lazygit (legacy)
+# --- Legacy: stale distro package removal -------------------------------------
+# These tools are now installed distro-independently via `go install` (see
+# go_tools). They were once installed via the distro package manager
+# (apt/dnf); /usr/bin/<tool> then shadows ~/<me>/go/bin/<tool> because
+# /usr/bin precedes ~/go/bin on PATH. These blocks remove the stale distro
+# copy so the Go-installed binary wins.
+#
+# LEGACY: safe to delete once all managed hosts have been reprovisioned past
+# the distro versions (no /usr/bin/lazygit or /usr/bin/fzf remaining).
+#
+# lazygit
+- name: Check for stale distro lazygit (legacy, removable)
   ansible.builtin.stat:
     path: /usr/bin/lazygit
   register: distro_lazygit_check
 
-- name: Remove stale distro lazygit package (legacy)
+- name: Remove stale distro lazygit package (legacy, removable)
   ansible.builtin.package:
     name: lazygit
     state: absent
   when: distro_lazygit_check.stat.exists
+
+# fzf -- Debian's apt package lags far behind upstream (e.g. 0.60 vs 0.73+).
+- name: Check for stale distro fzf (legacy, removable)
+  ansible.builtin.stat:
+    path: /usr/bin/fzf
+  register: distro_fzf_check
+
+- name: Remove stale distro fzf package (legacy, removable)
+  ansible.builtin.package:
+    name: fzf
+    state: absent
+  when: distro_fzf_check.stat.exists
+# --- End legacy --------------------------------------------------------------
 
 - name: Install Go toolchain
   ansible.builtin.unarchive:
