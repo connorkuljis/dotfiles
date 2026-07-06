@@ -1,7 +1,6 @@
 ---
 nvm_version: "v0.40.5"
 npm_globals:
-  - neovim
   - "@earendil-works/pi-coding-agent"  # pi coding agent
   # Language servers (consumed by nvim-lspconfig; see dotfiles/nvim/.../lsp.lua)
   - bash-language-server        # bashls
