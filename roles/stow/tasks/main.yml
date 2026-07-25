@@ -25,13 +25,28 @@
   become: false
   register: dotfiles_sync
 
-- name: Stow all packages
-  ansible.builtin.shell:
-    cmd: |
-      cd "{{ lookup('env', 'HOME') }}/.local/share/dotfiles"
-      for dir in */; do
-        stow --verbose --restow --no-folding -t {{ lookup('env', 'HOME') }} "${dir%/}"
-      done
+- name: Find stow packages
+  ansible.builtin.find:
+    paths: "{{ lookup('env', 'HOME') }}/.local/share/dotfiles"
+    file_type: directory
+  become: false
+  register: stow_packages
+
+- name: Stow each package
+  ansible.builtin.command: >-
+    stow
+    --verbose
+    --no-folding
+    --adopt
+    --dir {{ lookup('env', 'HOME') }}/.local/share/dotfiles
+    --target {{ lookup('env', 'HOME') }}
+    {{ item.path | basename }}
   register: stow_result
-  changed_when: "'LINK' in stow_result.stdout"
+  changed_when: "'LINK' in (stow_result.stdout ~ stow_result.stderr)"
+  failed_when: >-
+    stow_result.rc != 0
+    or 'WARNING!' in (stow_result.stdout ~ stow_result.stderr)
+    or 'conflict' in (stow_result.stdout ~ stow_result.stderr)
+    or 'All operations aborted' in (stow_result.stdout ~ stow_result.stderr)
+  loop: "{{ stow_packages.files }}"
   become: false
