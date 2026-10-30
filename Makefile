@@ -7,10 +7,11 @@ ACTIVATE = source ~/.venvs/ansible/bin/activate
 
 playbook: all
 
-# Run against only the current machine (uses this host's real hostname)
+# Run against only the current machine. `localhost` is configured for a local
+# connection in inventory.ini, so the system hostname need not be listed there.
 # Pass extra args via ARGS, e.g. `make local ARGS="--tags stow"`
 local:
-	$(ACTIVATE) && ansible-playbook -i inventory.ini playbook.yaml --limit $$(hostname) $(ARGS)
+	$(ACTIVATE) && ansible-playbook -i inventory.ini playbook.yaml --limit localhost $(ARGS)
 
 # Baseline roles (everything except desktop GUI apps)
 common:
